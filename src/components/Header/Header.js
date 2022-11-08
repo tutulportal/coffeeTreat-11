@@ -1,5 +1,8 @@
 import React from 'react';
 import { ArrowRightOnRectangleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee, faMugHot } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     return (
@@ -17,7 +20,7 @@ const Header = () => {
                 </div>
             </div>
             <div className="navbar-center">
-                <a href='/' className="btn btn-base-100 normal-case text-xl">CofeeTreat</a>
+                <Link to='/' className="btn btn-base-100 normal-case text-xl"><FontAwesomeIcon icon={faMugHot}></FontAwesomeIcon>&nbsp;CofeeTreat</Link>
             </div>
             <div className="navbar-end">
                 <button className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success" data-tip="Live Chat">
