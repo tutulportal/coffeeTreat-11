@@ -1,0 +1,32 @@
+.custom-container-1{
+    width: 100% !important;
+    height: 500px !important;
+    position: relative !important;
+    overflow: hidden;
+}
+
+.custom-container-1 > img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    transform-origin: center;
+    animation-name: cupAnimation;
+    animation-duration: 3s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+    transition: ease;
+}
+
+@keyframes cupAnimation {
+    0%{
+        transform: translate(-50%, -50%) rotateZ(0deg);
+    }
+    50%{
+        transform: translate(-50%, -50%) rotateZ(15deg);
+    }
+    100%{
+        transform: translate(-50%, -50%) rotateZ(0deg);
+    }
+}
