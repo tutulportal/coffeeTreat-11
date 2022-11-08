@@ -30,3 +30,7 @@
         transform: translate(-50%, -50%) rotateZ(0deg);
     }
 }
+
+.custom-bg-newsletter{
+    background-image: url('../src/resourses/img/testimonial-bg.png');
+}
