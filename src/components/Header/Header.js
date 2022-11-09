@@ -2,9 +2,16 @@ import React from 'react';
 import { ArrowRightOnRectangleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMugHot } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+
+    const navigate = useNavigate();
+
+    const goToLogin = () => {
+        navigate('/login');
+    }
+
     return (
         <div className="navbar bg-primary sticky top-0 z-50">
             <div className="navbar-start">
@@ -27,7 +34,7 @@ const Header = () => {
                     <ChatBubbleLeftEllipsisIcon className='w-5 h-5'></ChatBubbleLeftEllipsisIcon>
                 </div>
                 </button>
-                <button className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success" data-tip="Login">
+                <button onClick={goToLogin} className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success" data-tip="Login">
                 <div className="indicator">
                     <ArrowRightOnRectangleIcon className='w-5 h-5'></ArrowRightOnRectangleIcon>
                 </div>

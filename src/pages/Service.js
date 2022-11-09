@@ -5,7 +5,7 @@ import { useLoaderData, Link } from 'react-router-dom';
 
 const Service = () => {
     const service = useLoaderData();
-    const {_id, serviceName, description, image} = service[0];
+    const {_id, serviceName, description, price, image} = service[0];
     return (
         <section>
             {/* service details */}
@@ -37,13 +37,35 @@ const Service = () => {
                             <p className='text-sm font-light px-3'>The Coffee you want.</p>
                             <h2 className='px-3 text-2xl py-2 font-semibold'>About - {serviceName}</h2>
                             <p className='px-3 py-2 font-regular text-md'>{description}</p>
+                            <h1 className='px-3 text-3xl font-semibold text-success'>${price} USD</h1>
                             <button className="btn btn-primary mx-3 my-3">Get A Hot In Table</button>
                         </div>
                     </div>
                 </div>
                 {/* servicec comment */}
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className="text-3xl font-semibold">This is comment</h1>
+                    <div className="flex flex-col justify-center items-start">
+                        <h1 className='text-2xl font-semibold text-primary my-10 text-center w-full'>Review & Comments</h1>
+                        <div className="container mx-auto flex flex-col border border-primary p-4 rounded-lg">
+                            <form className='flex flex-col justify-center items-center'>
+                                <input type="text" placeholder="Your Name" className="input input-bordered input-primary w-full mb-2" />
+                                <textarea className="textarea textarea-primary w-full" placeholder="Write a comment..."></textarea>
+                                <input type="submit" value="Comment" className='btn btn-primary mt-2 w-full' />
+                            </form>
+
+                            <div className="flex flex-row justify-start items-start bg-slate-300 rounded-lg mt-3 p-2 shadow-md">
+                                <div className='w-20'>
+                                    <img src={image} className="w-14 h-14 rounded-full border border-success border-4 shadow-lg" alt="" />
+                                </div>
+                                <div>
+                                    <h2 className='text-md text-primary font-semibold'>Mr. Coder</h2>
+                                    <h2 className='text-md text-primary font-semibold'>something@email.com</h2>
+                                    <p className='text-md font-regular text-black'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus velit sed voluptatum voluptatem, dolor explicabo, laborum maiores vero perferendis possimus numquam, cum maxime. Temporibus, autem? Quibusdam libero officia molestiae nulla!</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

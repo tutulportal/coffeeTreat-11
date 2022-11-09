@@ -31,6 +31,8 @@
     }
 }
 
-.custom-bg-newsletter{
+.custom-bg-newsletter, .custom-bg-02{
     background-image: url('../src/resourses/img/testimonial-bg.png');
 }
+
+
