@@ -1,10 +1,11 @@
 import React from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import { Link } from 'react-router-dom';
 
 const SingleService = (props) => {
     const service = props.service;
-    const {serviceName, description, image, status, price} = service;
+    const {_id, serviceName, description, image, status, price} = service;
 
     // for limit the words to 100
     function shorten(text,max) {
@@ -30,7 +31,7 @@ const SingleService = (props) => {
                     <div className="badge badge-outline">USD</div>
                 </div>
                 <div className="flex flex-row justify-center items-center pt-4">
-                    <button className='btn btn-primary w-full'>View Details</button>
+                    <Link to={`/services/${_id}`} className='btn btn-primary w-full'>View Details</Link>
                 </div>
             </div>
         </div>
