@@ -1,16 +1,25 @@
-import React from 'react';
-import { ArrowRightOnRectangleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import React, { useContext } from 'react';
+import { ArrowRightOnRectangleIcon, ChatBubbleLeftEllipsisIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMugHot } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/auth.context';
 
 const Header = () => {
 
     const navigate = useNavigate();
+    const {user, logOut} = useContext(AuthContext);
 
     const goToLogin = () => {
         navigate('/login');
     }
+
+    const handleLogOut = () =>{
+        logOut()
+        .then(() =>{
+            navigate('/login');
+        });
+    };
 
     return (
         <div className="navbar bg-primary sticky top-0 z-50">
@@ -22,6 +31,12 @@ const Header = () => {
                 <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow-lg bg-base-100 rounded-box w-52">
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/services">Services</Link></li>
+                    {
+                        user ? <>
+                            <li><Link to="/">My Reviews</Link></li>
+                            <li><Link to="/">Add Services</Link></li>
+                        </> : <></>
+                    }
                 </ul>
                 </div>
             </div>
@@ -34,11 +49,22 @@ const Header = () => {
                     <ChatBubbleLeftEllipsisIcon className='w-5 h-5'></ChatBubbleLeftEllipsisIcon>
                 </div>
                 </button>
-                <button onClick={goToLogin} className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success" data-tip="Login">
-                <div className="indicator">
-                    <ArrowRightOnRectangleIcon className='w-5 h-5'></ArrowRightOnRectangleIcon>
-                </div>
-                </button>
+                {
+                    user ? <>
+                        <button onClick={handleLogOut} className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success" data-tip="Logout">
+                        <div className="indicator">
+                            <ArrowLeftOnRectangleIcon className='w-5 h-5'></ArrowLeftOnRectangleIcon>
+                        </div>
+                        </button>
+                    </> : <>
+                        <button onClick={goToLogin} className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success" data-tip="Login">
+                        <div className="indicator">
+                            <ArrowRightOnRectangleIcon className='w-5 h-5'></ArrowRightOnRectangleIcon>
+                        </div>
+                        </button>
+                    </>
+                }
+                
             </div>
         </div>
     );

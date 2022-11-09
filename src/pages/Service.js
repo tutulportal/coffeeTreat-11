@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faBagShopping, faMugHot } from '@fortawesome/free-solid-svg-icons';
-import { useLoaderData, Link } from 'react-router-dom';
+import { useLoaderData, Link, useLocation } from 'react-router-dom';
+import { AuthContext } from '../contexts/auth.context';
 
 const Service = () => {
+    const {user} = useContext(AuthContext);
     const service = useLoaderData();
+    const location = useLocation();
     const {_id, serviceName, description, price, image} = service[0];
     return (
         <section>
@@ -47,15 +50,24 @@ const Service = () => {
                     <div className="flex flex-col justify-center items-start">
                         <h1 className='text-2xl font-semibold text-primary my-10 text-center w-full'>Review & Comments</h1>
                         <div className="container mx-auto flex flex-col border border-primary p-4 rounded-lg">
-                            <form className='flex flex-col justify-center items-center'>
-                                <input type="text" placeholder="Your Name" className="input input-bordered input-primary w-full mb-2" />
-                                <textarea className="textarea textarea-primary w-full" placeholder="Write a comment..."></textarea>
-                                <input type="submit" value="Comment" className='btn btn-primary mt-2 w-full' />
-                            </form>
+                            {
+                                user ? <>
+                                    <form className='flex flex-col justify-center items-center'>
+                                        <input type="text" placeholder="Your Name" className="input input-bordered input-primary w-full mb-2" />
+                                        <textarea className="textarea textarea-primary w-full" placeholder="Write a comment..."></textarea>
+                                        <input type="submit" value="Comment" className='btn btn-primary mt-2 w-full' />
+                                    </form>
+                                </> : <>
+                                    <div className='flex flex-col justify-center items-center'>
+                                        <Link to='/login' state={{from: location}} replace className='btn btn-primary mt-2 w-full'>Please Login to Review</Link>
+                                    </div>
+                                </>
+                            }
+                            
 
                             <div className="flex flex-row justify-start items-start bg-slate-300 rounded-lg mt-3 p-2 shadow-md">
                                 <div className='w-20'>
-                                    <img src={image} className="w-14 h-14 rounded-full border border-success border-4 shadow-lg" alt="" />
+                                    <img src={image} className="w-14 h-14 rounded-full border-success border-4 shadow-lg" alt="" />
                                 </div>
                                 <div>
                                     <h2 className='text-md text-primary font-semibold'>Mr. Coder</h2>
