@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMugHot, faHeart } from '@fortawesome/free-solid-svg-icons';
 import cupImage from '../../resourses/img/cup.png';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
     return (
@@ -18,7 +19,7 @@ const HeroSection = () => {
                     <p className="py-6">Ah, coffee. Whether you're cradling a travel mug on your way to work or dashing out after spin class to refuel with a skinny latte, it's hard to imagine a day without it. The caffeine perks you up, and there's something incredibly soothing about sipping a steaming cup of joe.</p>
                     <div className='flex flex-row justify-start'>
                         <button className="btn btn-primary mr-2 border-primary"><FontAwesomeIcon icon={faHeart}></FontAwesomeIcon>&nbsp;Book a Table</button>
-                        <button className="btn bg-transparent border-primary text-primary hover:bg-primary hover:text-white hover:border-slate-200">All Services</button>
+                        <Link to="/services" className="btn bg-transparent border-primary text-primary hover:bg-primary hover:text-white hover:border-slate-200">All Services</Link>
                     </div>
                 </div>
             </div>

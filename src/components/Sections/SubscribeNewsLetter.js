@@ -11,7 +11,7 @@ const SubscribeNewsLetter = () => {
                 <div className="form-control">
                     <div className="input-group">
                         <input type="email" placeholder="name@email.com" className="input input-bordered" />
-                        <button className="btn btn-square">
+                        <button className="btn btn-square btn-primary">
                             <FontAwesomeIcon icon={faEnvelope}></FontAwesomeIcon>
                         </button>
                     </div>

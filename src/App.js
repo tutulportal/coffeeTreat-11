@@ -12,7 +12,13 @@ function App() {
       children: [
         {
           path: '/',
+          loader: async () => fetch('http://localhost:5000/services/3'),
           element: <Home/>
+        },
+        {
+          path: '/services',
+          loader: async () => fetch('http://localhost:5000/services/'),
+          element: <></>
         },
       ]
     },

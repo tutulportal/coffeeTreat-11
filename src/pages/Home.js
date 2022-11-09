@@ -3,15 +3,17 @@ import CounterSection from '../components/Sections/CounterSection';
 import HeroSection from '../components/Sections/HeroSection';
 import ServicesSection from '../components/Sections/ServicesSection';
 import SubscribeNewsLetter from '../components/Sections/SubscribeNewsLetter';
+import { useLoaderData } from 'react-router-dom';
 
 const Home = () => {
+    const servicesDatas = useLoaderData();
     return (
         <section>
             {/* hero section */}
             <HeroSection></HeroSection>
 
             {/* categories / services */}
-            <ServicesSection></ServicesSection>
+            <ServicesSection services={servicesDatas}></ServicesSection>
 
             {/* counter section */}
             <CounterSection></CounterSection>
