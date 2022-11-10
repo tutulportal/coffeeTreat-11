@@ -23,17 +23,17 @@ function App() {
       children: [
         {
           path: '/',
-          loader: async () => fetch('http://localhost:5000/services/3'),
+          loader: async () => fetch('https://coffee-treat-server.vercel.app/services/3'),
           element: <Home/>
         },
         {
           path: '/services',
-          loader: async () => fetch('http://localhost:5000/services/'),
+          loader: async () => fetch('https://coffee-treat-server.vercel.app/services/'),
           element: <Services/>
         },
         {
           path: '/services/:id',
-          loader: async ({params}) => fetch(`http://localhost:5000/services/single/${params.id}`),
+          loader: async ({params}) => fetch(`https://coffee-treat-server.vercel.app/services/single/${params.id}`),
           element: <Service/>
         },
         {
@@ -42,7 +42,7 @@ function App() {
         },
         {
           path: '/my-reviews/',
-          loader: async ({params}) => fetch(`http://localhost:5000/reviews/user/${user.email}`),
+          loader: async ({params}) => fetch(`https://coffee-treat-server.vercel.app/reviews/user/${user.email}`),
           element: <PrivateRoute><MyReviews/></PrivateRoute>
         },
         {

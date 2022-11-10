@@ -40,7 +40,7 @@ const AddServices = () => {
             "price": price
         }
 
-        fetch('http://localhost:5000/services', {
+        fetch('https://coffee-treat-server.vercel.app/services', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

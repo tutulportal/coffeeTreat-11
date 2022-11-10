@@ -29,7 +29,7 @@ const MyReviews = () => {
     }, [reviews.length])
 
     useEffect( () => {
-        fetch(`http://localhost:5000/reviews/user/${user.email}`)
+        fetch(`https://coffee-treat-server.vercel.app/reviews/user/${user.email}`)
         .then(res => res.json())
         .then(data => {
             setAllReviews(data)
@@ -104,7 +104,7 @@ const MyReviews = () => {
         confirmModal.classList.add('d-off');
         confirmModal.classList.remove('d-on');
         // deleting system
-        fetch(`http://localhost:5000/reviews/user/${id}`,{
+        fetch(`https://coffee-treat-server.vercel.app/reviews/user/${id}`,{
             method: 'DELETE'
         })
         .then(res => res.json())
@@ -148,7 +148,7 @@ const MyReviews = () => {
         e.preventDefault();
         let comment = e.target.comment.value;
         const id = editComment.id;
-        fetch(`http://localhost:5000/reviews/upadate/${id}`, {
+        fetch(`https://coffee-treat-server.vercel.app/reviews/upadate/${id}`, {
             method: "PATCH",
             headers: {"content-type": "application/json"},
             body: JSON.stringify({comment})
