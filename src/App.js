@@ -12,6 +12,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import AddServices from './pages/AddServices';
 import { useContext } from 'react';
 import { AuthContext } from './contexts/auth.context';
+import Blog from './pages/Blog';
 
 function App() {
   const {user} = useContext(AuthContext);
@@ -34,6 +35,10 @@ function App() {
           path: '/services/:id',
           loader: async ({params}) => fetch(`http://localhost:5000/services/single/${params.id}`),
           element: <Service/>
+        },
+        {
+          path: '/blog',
+          element: <Blog/>
         },
         {
           path: '/my-reviews/',

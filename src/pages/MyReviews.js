@@ -5,12 +5,15 @@ import { useState, useContext } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../contexts/auth.context';
+import UseTitle from './../customHooks/UseTitle';
 
 const MyReviews = () => {
+    UseTitle('My Reviews')
     const reviews = useLoaderData();
     const {user} = useContext(AuthContext);
     
     const confirmModal = document.getElementById('confirm-modal');
+    const updateModal = document.getElementById('update-modal');
     const [deleteId, setDeleteId] = useState('');
     
     const [allReviews, setAllReviews] = useState(reviews);
@@ -51,8 +54,34 @@ const MyReviews = () => {
         });
     }
 
+    const successUpdateToast = () => {
+        toast.success('Comment Updated Successfully!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    }
+
     const errorToast = () => {
         toast.error('Failed To Delete!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
+
+    const errorUpdateToast = () => {
+        toast.error('Failed To Update Comment!', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -95,6 +124,49 @@ const MyReviews = () => {
         confirmModal.classList.remove('d-on');
     }
 
+    const [editComment, setEditComment] = useState({
+        id: '',
+        comment: ''
+    })
+
+    const handleEditReviews = (id, comment) => {
+        let currentEditUser = {
+            id: id,
+            comment: comment
+        }
+        setEditComment(currentEditUser);
+        updateModal.classList.add('d-on');
+        updateModal.classList.remove('d-off');
+    }
+
+    const handleCloseUpdateModal = () => {
+        updateModal.classList.add('d-off');
+        updateModal.classList.remove('d-on');
+    }
+
+    const handleUpdateComment = (e) => {
+        e.preventDefault();
+        let comment = e.target.comment.value;
+        const id = editComment.id;
+        fetch(`http://localhost:5000/reviews/upadate/${id}`, {
+            method: "PATCH",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify({comment})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.message === 'updated'){
+                successUpdateToast();
+                setRefresh(!refresh);
+                updateModal.classList.add('d-off');
+                updateModal.classList.remove('d-on');
+            }else{
+                errorUpdateToast();
+            }
+        })
+    }
+
+
     
 
 
@@ -124,7 +196,7 @@ const MyReviews = () => {
                     {
                         reviewLength ? <>
                         {
-                            allReviews.map(review => <SingleTableData key={review._id} review={review} handleDeleteReview={handleDeleteReview}></SingleTableData>)
+                            allReviews.map(review => <SingleTableData key={review._id} review={review} handleDeleteReview={handleDeleteReview} handleEditReviews={handleEditReviews}></SingleTableData>)
                         }
                         </> : <>
                         <tr>
@@ -170,15 +242,15 @@ const MyReviews = () => {
                     <button className='btn btn-error' onClick={handleDeleteModalNo}>No</button>
                 </div>
             </div>
-            <div className="confirm-modal d-on" id='update-modal'>
+            <div className="confirm-modal d-off" id='update-modal'>
                 <div className="inner-modal">
                     <div className="flex flex-row justify-between items-center w-full">
                         <h2 className='text-2xl text-black py-2 mb-3 font-bold'>Edit Comment</h2>
-                        <button className='btn btn-error'>Close</button>
+                        <button className='btn btn-error' onClick={handleCloseUpdateModal}>Close</button>
                     </div>
                     
-                    <form className='flex flex-col justify-center items-center'>
-                        <textarea className="textarea textarea-primary w-full" placeholder="Write a comment..." name='comment' required></textarea>
+                    <form className='flex flex-col justify-center items-center' onSubmit={handleUpdateComment}>
+                        <textarea className="textarea textarea-primary w-full" id='' placeholder="Write a comment..." name='comment' defaultValue={editComment.comment} required></textarea>
                         <input type="submit" value="Comment" className='btn btn-primary mt-2 w-full' />
                     </form>
                 </div>

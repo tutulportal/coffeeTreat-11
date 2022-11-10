@@ -1,8 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../contexts/auth.context';
+import UseTitle from '../customHooks/UseTitle';
 
 const Register = () => {
+
+    UseTitle('Register')
 
     const {regWithEmailPass, updateUserOnRegistration} = useContext(AuthContext);
 

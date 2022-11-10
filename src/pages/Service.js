@@ -7,6 +7,7 @@ import { useLoaderData, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../contexts/auth.context';
 import SingleReview from '../components/Sections/SingleReview';
 import { useState, useEffect } from 'react';
+import UseTitle from './../customHooks/UseTitle';
 
 const Service = () => {
     const {user} = useContext(AuthContext);
@@ -16,6 +17,8 @@ const Service = () => {
     const [reviewLength, setReviewLength] = useState(false);
     const [allReviews, setAllReviews] = useState(reviews);
     const [refresh, setRefresh] = useState(false);
+
+    UseTitle(serviceName);
 
     // current date & time
     let today = new Date();

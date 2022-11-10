@@ -3,8 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from './../contexts/auth.context';
+import UseTitle from './../customHooks/UseTitle';
 
 const Login = () => {
+
+    
+    UseTitle('Login');
 
     const {loginWithEmailPass, loginWithGoogle} = useContext(AuthContext);
     const navigate = useNavigate();
