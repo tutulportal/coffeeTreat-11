@@ -7,6 +7,9 @@ import Services from './pages/Services';
 import Service from './pages/Service';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import MyReviews from './pages/MyReviews';
+import PrivateRoute from './routes/PrivateRoute';
+import AddServices from './pages/AddServices';
 
 function App() {
   const router = createBrowserRouter([
@@ -28,6 +31,14 @@ function App() {
           path: '/services/:id',
           loader: async ({params}) => fetch(`http://localhost:5000/services/single/${params.id}`),
           element: <Service/>
+        },
+        {
+          path: '/my-reviews/',
+          element: <PrivateRoute><MyReviews/></PrivateRoute>
+        },
+        {
+          path: '/add-services/',
+          element: <PrivateRoute><AddServices/></PrivateRoute>
         },
       ]
     },

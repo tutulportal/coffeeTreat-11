@@ -74,7 +74,8 @@ const Login = () => {
                     }
                     
                     <div className="form-control mt-6">
-                    <button className="btn btn-primary">Login</button>
+                    {/* <button className="btn btn-primary">Login</button> */}
+                    <input className="btn btn-primary" type="submit" value="Login" />
                     <button className="btn btn-black mt-2" onClick={handleGoogleSignIn}><FontAwesomeIcon icon={faKey}></FontAwesomeIcon>&nbsp;Google Sign-In</button>
                     </div>
                 </form>

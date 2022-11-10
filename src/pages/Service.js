@@ -1,14 +1,49 @@
 import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faBagShopping, faMugHot } from '@fortawesome/free-solid-svg-icons';
-import { useLoaderData, Link, useLocation } from 'react-router-dom';
+import { useLoaderData, Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/auth.context';
 
 const Service = () => {
     const {user} = useContext(AuthContext);
+    const navigate = useNavigate();
     const service = useLoaderData();
     const location = useLocation();
     const {_id, serviceName, description, price, image} = service[0];
+
+
+    const handleReviewAdd = (e) => {
+        e.preventDefault();
+        const name = e.target.name.value;
+        const comment = e.target.comment.value;
+        const review = {
+            "serviceId": `${_id}`,
+            "userUid": user.uid,
+            "name": name,
+            "photo": user.photoURL,
+            "email": user.email,
+            "comment": comment,
+        }
+
+        fetch('http://localhost:5000/reviews', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(review)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.acknowledged){
+                console.log(data);
+                alert('Review Added Successfully');
+                e.target.reset();
+                navigate(location.pathname);
+            }
+        })
+        .catch(err => console.error(err))
+    }
+
     return (
         <section>
             {/* service details */}
@@ -52,9 +87,9 @@ const Service = () => {
                         <div className="container mx-auto flex flex-col border border-primary p-4 rounded-lg">
                             {
                                 user ? <>
-                                    <form className='flex flex-col justify-center items-center'>
-                                        <input type="text" placeholder="Your Name" className="input input-bordered input-primary w-full mb-2" />
-                                        <textarea className="textarea textarea-primary w-full" placeholder="Write a comment..."></textarea>
+                                    <form className='flex flex-col justify-center items-center' onSubmit={handleReviewAdd}>
+                                        <input type="text" placeholder="Your Name" className="input input-bordered input-primary w-full mb-2" name='name' required />
+                                        <textarea className="textarea textarea-primary w-full" placeholder="Write a comment..." name='comment' required></textarea>
                                         <input type="submit" value="Comment" className='btn btn-primary mt-2 w-full' />
                                     </form>
                                 </> : <>

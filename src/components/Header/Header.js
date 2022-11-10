@@ -33,8 +33,8 @@ const Header = () => {
                     <li><Link to="/services">Services</Link></li>
                     {
                         user ? <>
-                            <li><Link to="/">My Reviews</Link></li>
-                            <li><Link to="/">Add Services</Link></li>
+                            <li><Link to="/my-reviews">My Reviews</Link></li>
+                            <li><Link to="/add-services">Add Services</Link></li>
                         </> : <></>
                     }
                 </ul>
@@ -44,13 +44,20 @@ const Header = () => {
                 <Link to='/' className="btn btn-primary hover:bg-primary hover:border-primary normal-case text-xl"><FontAwesomeIcon icon={faMugHot}></FontAwesomeIcon>&nbsp;CofeeTreat</Link>
             </div>
             <div className="navbar-end">
-                <button className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success mr-2" data-tip="Live Chat">
+                <button className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success mr-2 lg:inline-block md:inline-block sm:hidden hidden" data-tip="Live Chat">
                 <div className="indicator">
                     <ChatBubbleLeftEllipsisIcon className='w-5 h-5'></ChatBubbleLeftEllipsisIcon>
                 </div>
                 </button>
                 {
                     user ? <>
+
+                        <button className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success mr-2" data-tip={user.displayName}>
+                        <div className="indicator overflow-hidden w-12 h-12 rounded-full ">
+                            <img src={user.photoURL} className="h-full w-full" alt="" />
+                        </div>
+                        </button>
+
                         <button onClick={handleLogOut} className="btn btn-light btn-circle tooltip tooltip-bottom tooltip-success" data-tip="Logout">
                         <div className="indicator">
                             <ArrowLeftOnRectangleIcon className='w-5 h-5'></ArrowLeftOnRectangleIcon>
