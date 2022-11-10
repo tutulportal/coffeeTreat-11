@@ -1,13 +1,68 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import SingleTableData from '../components/Sections/SingleTableData';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from '../contexts/auth.context';
 
 const MyReviews = () => {
     const reviews = useLoaderData();
+    const {user} = useContext(AuthContext);
     
     const confirmModal = document.getElementById('confirm-modal');
     const [deleteId, setDeleteId] = useState('');
+    
+    const [allReviews, setAllReviews] = useState(reviews);
+    const [refresh, setRefresh] = useState(false);
+    const [reviewLength, setReviewLength] = useState(false);
+
+    useEffect( () => {
+        if(reviews.length > 0){
+            setReviewLength(true);
+        }else{
+            setReviewLength(false);
+        }
+    }, [reviews.length])
+
+    useEffect( () => {
+        fetch(`http://localhost:5000/reviews/user/${user.email}`)
+        .then(res => res.json())
+        .then(data => {
+            setAllReviews(data)
+            if(data.length > 0){
+                setReviewLength(true);
+            }else{
+                setReviewLength(false);
+            }
+        })
+    }, [user.email, refresh, reviewLength]);
+
+    const successToast = () => {
+        toast.success('Comment Deleted Successfully!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    }
+
+    const errorToast = () => {
+        toast.error('Failed To Delete!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
 
     const handleDeleteReview = (id) => {
         setDeleteId(id);
@@ -19,12 +74,29 @@ const MyReviews = () => {
         console.log(id);
         confirmModal.classList.add('d-off');
         confirmModal.classList.remove('d-on');
+        // deleting system
+        fetch(`http://localhost:5000/reviews/user/${id}`,{
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.deletedCount === 1){
+                successToast();
+                setRefresh(!refresh);
+            }else{
+                errorToast();
+            }
+        })
+        .catch(err => console.error(err));
     }
 
     const handleDeleteModalNo = () => {
         confirmModal.classList.add('d-off');
         confirmModal.classList.remove('d-on');
     }
+
+    
+
 
     return (
         <section>
@@ -50,7 +122,31 @@ const MyReviews = () => {
                     <tbody>
                     {/* <!-- row --> */}
                     {
-                        reviews.map(review => <SingleTableData key={review._id} review={review} handleDeleteReview={handleDeleteReview}></SingleTableData>)
+                        reviewLength ? <>
+                        {
+                            allReviews.map(review => <SingleTableData key={review._id} review={review} handleDeleteReview={handleDeleteReview}></SingleTableData>)
+                        }
+                        </> : <>
+                        <tr>
+                            <th>
+                            
+                            </th>
+                            <td>
+                            
+                            </td>
+                            <td>
+                                
+                            </td>
+                            
+                            <th>
+                                <h2 className='text-error text-center'>No comments found!</h2>
+                            </th>
+                            <th>
+                            
+                            </th>
+                        </tr>
+                        </>
+                        
                     }
                     </tbody>
                     {/* <!-- foot --> */}
@@ -74,6 +170,33 @@ const MyReviews = () => {
                     <button className='btn btn-error' onClick={handleDeleteModalNo}>No</button>
                 </div>
             </div>
+            <div className="confirm-modal d-on" id='update-modal'>
+                <div className="inner-modal">
+                    <div className="flex flex-row justify-between items-center w-full">
+                        <h2 className='text-2xl text-black py-2 mb-3 font-bold'>Edit Comment</h2>
+                        <button className='btn btn-error'>Close</button>
+                    </div>
+                    
+                    <form className='flex flex-col justify-center items-center'>
+                        <textarea className="textarea textarea-primary w-full" placeholder="Write a comment..." name='comment' required></textarea>
+                        <input type="submit" value="Comment" className='btn btn-primary mt-2 w-full' />
+                    </form>
+                </div>
+            </div>
+
+            <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            />
+
         </section>
     );
 };
