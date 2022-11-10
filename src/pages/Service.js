@@ -3,14 +3,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faBagShopping, faMugHot } from '@fortawesome/free-solid-svg-icons';
 import { useLoaderData, Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/auth.context';
+import SingleReview from '../components/Sections/SingleReview';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Service = () => {
     const {user} = useContext(AuthContext);
     const navigate = useNavigate();
-    const service = useLoaderData();
+    const {service, reviews} = useLoaderData();
     const location = useLocation();
     const {_id, serviceName, description, price, image} = service[0];
-
+    const [reviewLength, setReviewLength] = useState(false);
+    
+    useEffect( () => {
+        if(reviews.length > 0){
+            setReviewLength(true);
+        }else{
+            setReviewLength(false);
+        }
+    }, [])
 
     const handleReviewAdd = (e) => {
         e.preventDefault();
@@ -36,9 +47,9 @@ const Service = () => {
         .then(data => {
             if(data.acknowledged){
                 console.log(data);
-                alert('Review Added Successfully');
                 e.target.reset();
-                navigate(location.pathname);
+                window.location.reload();
+                // navigate(location.pathname);
             }
         })
         .catch(err => console.error(err))
@@ -98,18 +109,19 @@ const Service = () => {
                                     </div>
                                 </>
                             }
-                            
 
-                            <div className="flex flex-row justify-start items-start bg-slate-300 rounded-lg mt-3 p-2 shadow-md">
-                                <div className='w-20'>
-                                    <img src={image} className="w-14 h-14 rounded-full border-success border-4 shadow-lg" alt="" />
+                            {
+                                reviewLength ? reviews.map(review => <SingleReview key={review._id} review={review}></SingleReview>) : <>
+
+                                <div className="flex flex-row justify-start items-start bg-slate-300 rounded-lg mt-3 p-2 shadow-md">
+                                    <div>
+                                        <h2 className='text-md text-danger font-semibold'>No Reviews Found!</h2>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h2 className='text-md text-primary font-semibold'>Mr. Coder</h2>
-                                    <h2 className='text-md text-primary font-semibold'>something@email.com</h2>
-                                    <p className='text-md font-regular text-black'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus velit sed voluptatum voluptatem, dolor explicabo, laborum maiores vero perferendis possimus numquam, cum maxime. Temporibus, autem? Quibusdam libero officia molestiae nulla!</p>
-                                </div>
-                            </div>
+
+                                </>
+                                
+                            }
 
                         </div>
                     </div>
