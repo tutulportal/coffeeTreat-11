@@ -1,19 +1,27 @@
 import React, { useContext } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faBagShopping, faMugHot } from '@fortawesome/free-solid-svg-icons';
-import { useLoaderData, Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLoaderData, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../contexts/auth.context';
 import SingleReview from '../components/Sections/SingleReview';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const Service = () => {
     const {user} = useContext(AuthContext);
-    const navigate = useNavigate();
     const {service, reviews} = useLoaderData();
     const location = useLocation();
     const {_id, serviceName, description, price, image} = service[0];
     const [reviewLength, setReviewLength] = useState(false);
+    const [allReviews, setAllReviews] = useState(reviews);
+    const [refresh, setRefresh] = useState(false);
+
+    // current date & time
+    let today = new Date();
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let dateTime = date+' '+time;
     
     useEffect( () => {
         if(reviews.length > 0){
@@ -21,14 +29,45 @@ const Service = () => {
         }else{
             setReviewLength(false);
         }
-    }, [])
+    }, [reviews.length])
+
+    
+    useEffect( () => {
+        fetch(`http://localhost:5000/services/single/${_id}`)
+        .then(res => res.json())
+        .then(data => {
+            setAllReviews(data.reviews)
+            if(data.reviews.length > 0){
+                setReviewLength(true);
+            }else{
+                setReviewLength(false);
+            }
+        })
+    }, [_id, refresh, reviewLength]);
+
+    // success toast
+    const successToast = () => {
+        toast.success('Comment added successfully!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    }
+    
 
     const handleReviewAdd = (e) => {
         e.preventDefault();
         const name = e.target.name.value;
         const comment = e.target.comment.value;
         const review = {
+            "dateTime": dateTime,
             "serviceId": `${_id}`,
+            "serviceName": serviceName,
             "userUid": user.uid,
             "name": name,
             "photo": user.photoURL,
@@ -46,10 +85,9 @@ const Service = () => {
         .then(res => res.json())
         .then(data => {
             if(data.acknowledged){
-                console.log(data);
                 e.target.reset();
-                window.location.reload();
-                // navigate(location.pathname);
+                setRefresh(!refresh);
+                successToast();
             }
         })
         .catch(err => console.error(err))
@@ -111,7 +149,7 @@ const Service = () => {
                             }
 
                             {
-                                reviewLength ? reviews.map(review => <SingleReview key={review._id} review={review}></SingleReview>) : <>
+                                reviewLength ? allReviews.map(review => <SingleReview key={review._id} review={review}></SingleReview>) : <>
 
                                 <div className="flex flex-row justify-start items-start bg-slate-300 rounded-lg mt-3 p-2 shadow-md">
                                     <div>
@@ -127,6 +165,20 @@ const Service = () => {
                     </div>
                 </div>
             </div>
+
+            <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            />
+
         </section>
     );
 };

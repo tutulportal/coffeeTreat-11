@@ -10,8 +10,11 @@ import Register from './pages/Register';
 import MyReviews from './pages/MyReviews';
 import PrivateRoute from './routes/PrivateRoute';
 import AddServices from './pages/AddServices';
+import { useContext } from 'react';
+import { AuthContext } from './contexts/auth.context';
 
 function App() {
+  const {user} = useContext(AuthContext);
   const router = createBrowserRouter([
     {
       path: '/',
@@ -34,6 +37,7 @@ function App() {
         },
         {
           path: '/my-reviews/',
+          loader: async ({params}) => fetch(`http://localhost:5000/reviews/user/${user.email}`),
           element: <PrivateRoute><MyReviews/></PrivateRoute>
         },
         {

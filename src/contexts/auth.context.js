@@ -9,6 +9,7 @@ const auth = getAuth(app);
 const AuthProvider = ({ children }) =>{
 
     const [loading, setLoading] = useState(true);
+    const [refresh, setRefresh] = useState(false);
 
     const [user, setUser] = useState({
         email: null,
@@ -54,7 +55,7 @@ const AuthProvider = ({ children }) =>{
     }, [])
 
     const allValues = {
-        user, loading, setUser, loginWithGoogle, logOut, regWithEmailPass, updateUserOnRegistration, loginWithEmailPass
+        user, loading, refresh, setRefresh, setUser, loginWithGoogle, logOut, regWithEmailPass, updateUserOnRegistration, loginWithEmailPass
     };
     return (
         <AuthContext.Provider value={allValues}>

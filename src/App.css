@@ -36,3 +36,34 @@
 }
 
 
+
+/* modal custom css */
+.confirm-modal{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.7);
+    backdrop-filter: blur(1px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.confirm-modal.d-off{
+    display: none;
+}
+
+.confirm-modal.d-on{
+    display: flex;
+}
+
+.confirm-modal > .inner-modal{
+    width: 40%;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+}
